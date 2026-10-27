@@ -1,0 +1,139 @@
+/* Shared site styles for the parking app */
+:root{
+  --bg-dark1: #0f172a;
+  --bg-dark2: #1e1b4b;
+  --accent1: #a855f7;
+  --accent2: #6366f1;
+  --accent-success: #10b981;
+}
+
+html,body{height:100%;}
+body{
+  font-family: 'Plus Jakarta Sans', 'Poppins', sans-serif;
+  color: #f8fafc;
+  background: linear-gradient(135deg, var(--bg-dark1), var(--bg-dark2));
+  -webkit-font-smoothing:antialiased;
+}
+
+/* Layout */
+.sidebar{
+  background: rgba(15,23,42,0.6);
+  backdrop-filter: blur(12px);
+  border-right: 1px solid rgba(255,255,255,0.06);
+  min-height:100vh;
+  padding:24px 16px;
+  position:fixed;left:0;top:0;width:18%;z-index:1000;
+}
+.main-content{margin-left:18%;padding:32px}
+
+.card-custom{
+  border-radius:16px;background:rgba(30,41,59,0.45);border:1px solid rgba(255,255,255,0.06);backdrop-filter:blur(16px);
+}
+
+.badge-plate{background:#fff;color:#15c8b0;font-weight:800;border:2px solid #2b57c0;padding:6px 12px;border-radius:6px}
+
+.monitor-card{padding:18px;border-radius:14px;margin-bottom:16px}
+.neon-free{background:linear-gradient(135deg, rgba(16,185,129,0.08), rgba(5,150,105,0.18));border:1px solid #10b981;color:#10b981}
+.neon-busy{background:linear-gradient(135deg, rgba(59,130,246,0.08), rgba(29,78,216,0.18));border:1px solid #3b82f6;color:#60a5fa}
+
+.form-control-custom{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:12px;color:#fff}
+.form-control-custom:focus{box-shadow:0 0 18px rgba(168,85,247,0.15);border-color:var(--accent1)}
+
+.btn-unified{background:linear-gradient(90deg,#22c55e,#06b6d4);color:#000;border:none;padding:10px 14px;border-radius:10px}
+.btn-unified:hover{filter:brightness(.98);transform:translateY(-1px)}
+
+/* Login & Register containers */
+.auth-center{display:flex;justify-content:center;align-items:center;min-height:100vh;padding:24px}
+.auth-card{width:100%;max-width:480px;padding:36px;background:rgba(255,255,255,0.04);backdrop-filter:blur(12px);border-radius:18px;border:1px solid rgba(255,255,255,0.06)}
+.auth-card h2{font-size:26px;margin-bottom:18px}
+
+/* Tables */
+.table-light-custom{
+  background: transparent !important;
+  color: #cbd5e1;
+  border-collapse: separate;
+}
+
+.table-light-custom thead th{
+  background: transparent !important;
+  color: #cbd5e1 !important;
+  border-bottom: 1px solid rgba(255,255,255,0.06) !important;
+}
+
+.table-light-custom tbody tr{
+  background: rgba(255,255,255,0.02);
+  transition: background .12s ease;
+}
+
+.table-light-custom tbody tr:hover{
+  background: rgba(255,255,255,0.04);
+}
+
+.table-light-custom td, .table-light-custom th{
+  border-top: none !important;
+  padding: .75rem 1rem;
+}
+
+.table-light-custom .badge-plate{
+  background: rgba(11,18,32,0.9);
+  color: #7ef3d6;
+  border: none;
+}
+
+.receipt-card{
+  width: 240px;
+  background: #fefefe;
+  color: #111827;
+  border: 2px dashed #cbd5e1;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 12px 26px rgba(15, 23, 42, 0.16);
+}
+
+.receipt-header{
+  background: #111827;
+  color: #f8fafc;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  padding: 10px 8px;
+}
+
+.receipt-body{
+  padding: 12px 14px 8px;
+  font-size: 12px;
+}
+
+.receipt-row{
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 4px 0;
+  border-bottom: 1px dashed rgba(15, 23, 42, 0.15);
+}
+
+.receipt-row:last-child{
+  border-bottom: none;
+}
+
+.total-row{
+  margin-top: 6px;
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.receipt-footer{
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 10px 8px 12px;
+  background: #f3f4f6;
+  border-top: 1px dashed rgba(15, 23, 42, 0.12);
+}
+
+/* Responsive tweaks */
+@media (max-width: 992px){
+  .sidebar{position:relative;width:100%;min-height:auto}
+  .main-content{margin-left:0}
+}

@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+{% block title %}Avto Turargoh Tizimi{% endblock %}
+{% block content %}
+<div class="container-fluid p-0">
+    <div class="d-flex">
+
+        <!-- 🧭 CHAP BURCHAK: Monitor paneli -->
+        <div class="sidebar d-flex flex-column justify-content-between">
+            <div>
+                <h4 class="text-center fw-bold mb-4 text-warning tracking-wide">🅿️ STAYANKA</h4>
+                <hr class="border-secondary opacity-25">
+
+                <div class="card text-center monitor-card neon-free shadow-sm">
+                    <span class="text-uppercase small fw-bold">Bo'sh Joylar</span>
+                    <h1 class="display-5 fw-bold my-1 text-white">{{ free_spaces }}</h1>
+                    <small class="text-white opacity-75">Maks: 200</small>
+                </div>
+
+                <div class="card text-center monitor-card neon-busy shadow-sm">
+                    <span class="text-uppercase small fw-bold">Band Joylar</span>
+                    <h1 class="display-5 fw-bold my-1 text-white">{{ current_count }}</h1>
+                    <small class="text-white opacity-75">Hozir ichkarida</small>
+                </div>
+            </div>
+
+            <div>
+                <hr class="border-secondary opacity-25">
+                <a href="{% url 'logout' %}" class="btn btn-unified w-100 fw-bold py-2.5 rounded-3">🚪 Chiqish</a>
+            </div>
+        </div>
+        <!-- 🚗 O'NG TOMON: Asosiy boshqaruv qismi -->
+        <div class="main-content">
+
+            <!-- Yuqori banner -->
+            <div class="p-4 rounded-4 mb-4 card-custom border-start border-warning border-5 d-flex justify-content-between align-items-center">
+                <div>
+                    <h2 class="text-white fw-bold m-0">👋 Salom, Avtoturargohga Xush Kelibsiz!</h2>
+                    <p class="text-slate-300 mt-1 mb-0 opacity-75">Kirish 5000 so'm, keyingi har bir soatni 1,500 so'mdan hisoblaydi.</p>
+                </div>
+                <span class="badge bg-warning text-dark px-3 py-2 rounded-pill fw-bold fs-7 shadow-sm">⚡ PREMIUM ONLINE</span>
+            </div>
+
+            <!-- Tizim bildirishnomasi -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %} alert-dismissible fade show shadow rounded-3 mb-4" role="alert">
+                        <strong>🛡️ Tizim:</strong> {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Yopish"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            {% if receipt %}
+                <div class="receipt-card mb-4 mx-auto mx-lg-0" style="max-width: 260px;">
+                    <div class="receipt-header">CHEK</div>
+                    <div class="receipt-body">
+                        <div class="receipt-row">
+                            <span>Raqam:</span>
+                            <strong>{{ receipt.plate_number }}</strong>
+                        </div>
+                        <div class="receipt-row">
+                            <span>Rusumi:</span>
+                            <strong>{{ receipt.car_model }}</strong>
+                        </div>
+                        <div class="receipt-row">
+                            <span>Kirish:</span>
+                            <strong>{{ receipt.arrival_time|date:"Y-m-d H:i" }}</strong>
+                        </div>
+                        <div class="receipt-row">
+                            <span>Vaqti:</span>
+                            <strong>{{ receipt.get_duration_string }}</strong>
+                        </div>
+                        <div class="receipt-row total-row">
+                            <span>Umumiy:</span>
+                            <strong>{{ receipt.total_charge|floatformat:0 }} so'm</strong>
+                        </div>
+                    </div>
+                    <div class="receipt-footer">Avtomobil chiqib ketdi</div>
+                </div>
+            {% endif %}
+
+            <div class="row">
+                <!-- 📥 YANGI AVTO KIRISH FORMASI -->
+                <div class="col-lg-5 mb-4">
+                    <div class="card p-4 card-custom border-top border-success border-4 shadow">
+                        <h4 class="fw-bold mb-4 text-success d-flex align-items-center">
+                            <span class="me-2">📝</span> Yangi Avto Kirishi
+                        </h4>
+                        <form action="{% url 'park_car' %}" method="post">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold text-light opacity-75 small">MASHINA RAQAMI</label>
+                                <input type="text" name="plate_number" class="form-control form-control-lg form-control-custom text-uppercase fw-bold text-center fs-4" placeholder="01 A 123 AA" required>
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold text-light opacity-75 small">MASHINA RUSUMI</label>
+                                <input type="text" name="car_model" class="form-control form-control-lg form-control-custom fs-5" placeholder="Gentra, Cobalt, Nexia" required>
+                            </div>
+                            <button type="submit" class="btn btn-unified btn-lg w-100 shadow fw-bold py-3 fs-5 rounded-3" style="height: 40px; border-radius: 12%; color: black;">🚀 Stayankaga kiritish</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- 📋 O'NG BURCHAK: JADVAL RO'YXATI -->
+                <div class="col-lg-7">
+                    <div class="card p-4 card-custom border-top border-primary border-4 shadow">
+
+                        <!-- Qidiruv tizimi -->
+                        <div class="mb-4">
+                            <form method="get" action="">
+                                <div class="input-group">
+                                    <input type="text" name="q" class="form-control form-control-lg form-control-custom" placeholder="Raqam yoki rusum bo'yicha qidirish..." value="{{ search_query }}">
+                                    <button class="btn btn-unified px-4 rounded-end-3 fw-bold" type="submit">🔍 Qidiruv</button>
+                                    {% if search_query %}
+                                        <a href="{% url 'parking_dashboard' %}" class="btn btn-unified d-flex align-items-center ms-2 rounded-3">Tozalash</a>
+                                    {% endif %}
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- RO'YXAT: Stayankadagi mashinalar -->
+                        <div class="table-responsive mt-3">
+                            {% if cars and cars.exists %}
+                                <table class="table table-borderless table-light-custom align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>Raqam</th>
+                                            <th>Rusumi</th>
+                                            <th>Kirgani</th>
+                                            <th>Vaqt</th>
+                                            <th>To'lov</th>
+                                            <th>Amal</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for car in cars %}
+                                            <tr>
+                                                <td><span class="badge-plate">{{ car.plate_number }}</span></td>
+                                                <td>{{ car.car_model }}</td>
+                                                <td>{{ car.arrival_time|date:"Y-m-d H:i" }}</td>
+                                                <td>{{ car.get_duration_string }}</td>
+                                                <td class="fw-bold">{{ car.current_charge|floatformat:0 }} so'm</td>
+                                                <td>
+                                                    <form method="post" action="{% url 'unpark_car' car.id %}" style="display:inline-block;">
+                                                        {% csrf_token %}
+                                                        <button type="submit" class="btn btn-unified btn-sm">🚪 Chiqarmoq</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% else %}
+                                <p class="text-center text-muted py-4">Hech qanday avtomobil topilmadi.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Optional: Bootstrap JS -->
+{% endblock %}
+

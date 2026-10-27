@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Tizimga kirish{% endblock %}
+{% block content %}
+<div class="auth-center">
+    <div class="auth-card">
+        <h2>Tizimga kirish</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3 text-start">
+                <label class="form-label text-muted">Login:</label>
+                <input type="text" name="username" class="form-control form-control-custom" placeholder="Foydalanuvchi nomi" required>
+            </div>
+            <div class="mb-3 text-start">
+                <label class="form-label text-muted">Parol:</label>
+                <input type="password" name="password" class="form-control form-control-custom" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn btn-unified w-100">Kirish</button>
+        </form>
+        <p class="register-text mt-3">Yangi admin? <a href="{% url 'register' %}">Ro'yxatdan o'tish</a></p>
+    </div>
+</div>
+{% endblock %}
